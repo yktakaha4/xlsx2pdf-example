@@ -1,0 +1,19 @@
+service: xlsx2pdf-example
+
+provider:
+  name: aws
+  stage: prod
+  region: ${env:AWS_DEFAULT_REGION}
+  # deploymentBucket: lambda-docker-serverless-deployment
+
+functions:
+  index:
+    image: "#{AWS::AccountId}.dkr.ecr.#{AWS::Region}.amazonaws.com/lambda-docker-serverless-repos@${env:IMAGE_DIGEST}"
+    events:
+      - http:
+          path: index
+          method: post
+          cors: true
+
+plugins:
+  - serverless-pseudo-parameters
